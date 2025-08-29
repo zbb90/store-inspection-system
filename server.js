@@ -453,11 +453,20 @@ app.post('/api/upload/video', upload.single('video'), (req, res) => {
   });
 });
 
+// 健康检查端点
+app.get('/', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    message: '巡店监控审核系统运行正常',
+    timestamp: new Date().toISOString()
+  });
+});
+
 // 静态文件服务
 app.use('/uploads', express.static(uploadDir));
 
 // 生产环境下提供静态文件
-if (process.env.NODE_ENV === 'production' || process.env.VERCEL) {
+if (process.env.NODE_ENV === 'production' || process.env.VERCEL || process.env.RAILWAY_ENVIRONMENT) {
   app.use(express.static(path.join(__dirname, 'client/build')));
   
   app.get('*', (req, res) => {
