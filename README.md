@@ -115,3 +115,4 @@ npm start  # 启动服务器，访问 http://localhost:3001
 
 如有问题或需要定制开发，请联系技术支持团队。
 # store-inspection-system
+# 触发Railway部署
