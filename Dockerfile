@@ -13,8 +13,10 @@ RUN npm install
 # 复制源代码
 COPY . .
 
-# 可选：构建前端（如果存在client）
-RUN if [ -f ./client/package.json ]; then cd client && npm install && npm run build; fi
+# 构建前端
+COPY client/package*.json ./client/
+RUN cd client && npm install
+RUN cd client && npm run build
 
 # 暴露端口
 EXPOSE 3000

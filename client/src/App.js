@@ -17,6 +17,7 @@ import Statistics from './pages/Statistics';
 import StoreManagement from './pages/StoreManagement';
 import InspectorManagement from './pages/InspectorManagement';
 import VideoMonitorLayout from './components/VideoMonitorLayout';
+import SimpleMonitor from './pages/SimpleMonitor';
 
 const { Header, Content, Sider } = Layout;
 
@@ -34,6 +35,11 @@ function AppLayout() {
       key: '/monitor',
       icon: <VideoCameraOutlined />,
       label: <Link to="/monitor">视频监控审核</Link>,
+    },
+    {
+      key: '/simple',
+      icon: <VideoCameraOutlined />,
+      label: <Link to="/simple">简化监控页面</Link>,
     },
     {
       key: '/list',
@@ -75,6 +81,7 @@ function AppLayout() {
             <Routes>
               <Route path="/" element={<InspectionForm />} />
               <Route path="/monitor" element={<VideoMonitorLayout />} />
+              <Route path="/simple" element={<SimpleMonitor />} />
               <Route path="/list" element={<InspectionList />} />
               <Route path="/statistics" element={<Statistics />} />
               <Route path="/stores" element={<StoreManagement />} />
