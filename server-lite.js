@@ -241,10 +241,17 @@ app.get('/api/export/inspections', (req, res) => {
 // 生产环境：提供前端静态文件
 const clientBuild = path.join(__dirname, 'client', 'build');
 if (fs.existsSync(clientBuild)) {
+  console.log('提供静态文件服务:', clientBuild);
   app.use(express.static(clientBuild));
+  
+  // 所有非API路由都返回index.html（SPA路由）
   app.get('*', (req, res) => {
-    res.sendFile(path.join(clientBuild, 'index.html'));
+    if (!req.path.startsWith('/api/')) {
+      res.sendFile(path.join(clientBuild, 'index.html'));
+    }
   });
+} else {
+  console.log('前端构建目录不存在:', clientBuild);
 }
 
 app.listen(PORT, '0.0.0.0', () => {
