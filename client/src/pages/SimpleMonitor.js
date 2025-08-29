@@ -38,15 +38,27 @@ const SimpleMonitor = () => {
   const handleUpload = async (file) => {
     console.log('开始上传文件:', file.name, file.size);
     
+    // 文件大小检查
+    if (file.size > 2 * 1024 * 1024 * 1024) {
+      message.error('文件大小超过2GB限制');
+      return false;
+    }
+    
     const formData = new FormData();
     formData.append('video', file);
     
     try {
+      // 创建AbortController用于超时控制
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 300000); // 5分钟超时
+      
       const response = await fetch('/api/upload/video', {
         method: 'POST',
         body: formData,
+        signal: controller.signal,
       });
       
+      clearTimeout(timeoutId);
       console.log('上传响应状态:', response.status);
       
       if (response.ok) {
@@ -58,11 +70,15 @@ const SimpleMonitor = () => {
       } else {
         const errorText = await response.text();
         console.error('上传失败:', errorText);
-        message.error(`上传失败: ${response.status}`);
+        message.error(`上传失败: ${response.status} - ${errorText}`);
       }
     } catch (error) {
       console.error('上传错误:', error);
-      message.error(`上传错误: ${error.message}`);
+      if (error.name === 'AbortError') {
+        message.error('上传超时，请稍后重试');
+      } else {
+        message.error(`上传错误: ${error.message}`);
+      }
     }
     
     return false; // 阻止默认上传
@@ -176,13 +192,17 @@ const SimpleMonitor = () => {
               showUploadList={false}
               accept="video/*"
               disabled={false}
+              maxSize={2 * 1024 * 1024 * 1024}
             >
-              <Button icon={<UploadOutlined />} type="primary">
+              <Button icon={<UploadOutlined />} type="primary" loading={false}>
                 上传视频 (最大2GB)
               </Button>
             </Upload>
             <div style={{ marginTop: 8, fontSize: '12px', color: '#666' }}>
               支持格式: MP4, AVI, MOV 等视频文件
+            </div>
+            <div style={{ marginTop: 4, fontSize: '12px', color: '#999' }}>
+              大文件上传可能需要较长时间，请耐心等待
             </div>
           </Card>
 
