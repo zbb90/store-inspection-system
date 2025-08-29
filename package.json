@@ -4,8 +4,8 @@
   "description": "巡店监控审核系统",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js",
+    "start": "node server-simple.js",
+    "dev": "nodemon server-simple.js",
     "client": "cd client && npm start",
     "server": "npm run dev",
     "build": "cd client && npm install && npm run build",
