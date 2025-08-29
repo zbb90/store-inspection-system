@@ -476,4 +476,6 @@ if (process.env.NODE_ENV === 'production' || process.env.VERCEL || process.env.R
 
 app.listen(PORT, () => {
   console.log(`服务器运行在 http://localhost:${PORT}`);
+  console.log(`环境变量: NODE_ENV=${process.env.NODE_ENV}, PORT=${process.env.PORT}, RAILWAY_ENVIRONMENT=${process.env.RAILWAY_ENVIRONMENT}`);
+  console.log(`健康检查端点: http://localhost:${PORT}/`);
 });

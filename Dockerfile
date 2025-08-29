@@ -20,6 +20,7 @@ RUN cd client && npm run build
 
 # 暴露端口
 EXPOSE 3000
+ENV PORT=3000
 
 # 启动应用
 CMD ["npm", "start"]
