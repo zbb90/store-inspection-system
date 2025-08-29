@@ -36,6 +36,8 @@ const SimpleMonitor = () => {
   };
 
   const handleUpload = async (file) => {
+    console.log('开始上传文件:', file.name, file.size);
+    
     const formData = new FormData();
     formData.append('video', file);
     
@@ -45,16 +47,22 @@ const SimpleMonitor = () => {
         body: formData,
       });
       
+      console.log('上传响应状态:', response.status);
+      
       if (response.ok) {
         const result = await response.json();
+        console.log('上传成功:', result);
         message.success('视频上传成功');
         setVideos(prev => [...prev, result.file]);
         setCurrentVideo(result.file);
       } else {
-        message.error('上传失败');
+        const errorText = await response.text();
+        console.error('上传失败:', errorText);
+        message.error(`上传失败: ${response.status}`);
       }
     } catch (error) {
-      message.error('上传错误');
+      console.error('上传错误:', error);
+      message.error(`上传错误: ${error.message}`);
     }
     
     return false; // 阻止默认上传
@@ -167,9 +175,15 @@ const SimpleMonitor = () => {
               beforeUpload={handleUpload}
               showUploadList={false}
               accept="video/*"
+              disabled={false}
             >
-              <Button icon={<UploadOutlined />}>上传视频 (最大2GB)</Button>
+              <Button icon={<UploadOutlined />} type="primary">
+                上传视频 (最大2GB)
+              </Button>
             </Upload>
+            <div style={{ marginTop: 8, fontSize: '12px', color: '#666' }}>
+              支持格式: MP4, AVI, MOV 等视频文件
+            </div>
           </Card>
 
           <Card title="视频列表" style={{ marginTop: 16 }}>
