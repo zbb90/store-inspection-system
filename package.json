@@ -2,14 +2,16 @@
   "name": "store-inspection-system",
   "version": "1.0.0",
   "description": "巡店监控审核系统",
-  "main": "server-simple.js",
+  "main": "server-lite.js",
   "scripts": {
-    "start": "node server-simple.js",
-    "dev": "nodemon server-simple.js"
+    "start": "node server-lite.js",
+    "dev": "nodemon server-lite.js"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1",
+    "dayjs": "^1.11.10"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
